@@ -19,7 +19,7 @@ export interface EventDetailsDto extends EventDto {
   venueAddress: string;
   venueLatitude: number | null;
   venueLongitude: number | null;
-  availableSeats: SeatDto[];
+  seats: SeatDto[];
 }
 
 export interface SeatDto {
@@ -100,4 +100,22 @@ export interface AnalyticsDto {
   byDay: AnalyticsByDay[];
   topUsers: AnalyticsUser[];
   recentPayments: AnalyticsPayment[];
+}
+
+export interface ChatMessageDto {
+  id: string;
+  roomId: string;
+  senderId: string;
+  senderName: string;
+  isSupport: boolean;
+  text: string;
+  createdAt: string;
+}
+
+export interface ChatRoomDto {
+  id: string;
+  userId: string;
+  userEmail: string;
+  createdAt: string;
+  lastMessage: ChatMessageDto | null;
 }

@@ -2,7 +2,7 @@ export function formatPrice(amount: number | null | undefined): string {
   if (amount === null || amount === undefined) return '—';
   return new Intl.NumberFormat('ru-RU', {
     style: 'currency',
-    currency: 'RUB',
+    currency: 'BYN',
     maximumFractionDigits: 0,
   }).format(amount);
 }
@@ -60,6 +60,13 @@ export const EVENT_STATUS_TONES: Record<string, BadgeTone> = {
   cancelled: 'red',
   sold_out: 'blue',
 };
+
+export function formatTime(iso: string): string {
+  return new Intl.DateTimeFormat('ru-RU', {
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(new Date(iso));
+}
 
 export function formatDateParts(iso: string): { day: string; month: string; weekday: string; time: string } {
   const date = new Date(iso);

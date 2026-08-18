@@ -18,6 +18,8 @@ import { EventsAdminPage } from './pages/admin/EventsAdminPage';
 import { RefundsPage } from './pages/admin/RefundsPage';
 import { AnalyticsPage } from './pages/admin/AnalyticsPage';
 import { TicketsCheckPage } from './pages/admin/TicketsCheckPage';
+import { SupportChatPage } from './pages/admin/SupportChatPage';
+import { ChatPage } from './pages/chat/ChatPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -46,6 +48,7 @@ export default function App() {
               <Route element={<RequireAuth />}>
                 <Route path="/orders" element={<OrdersPage />} />
                 <Route path="/orders/:id" element={<OrderDetailPage />} />
+                <Route path="/chat" element={<ChatPage />} />
               </Route>
 
               <Route path="/admin" element={<RequireAdmin />}>
@@ -56,6 +59,7 @@ export default function App() {
                   <Route path="refunds" element={<RefundsPage />} />
                   <Route path="analytics" element={<AnalyticsPage />} />
                   <Route path="tickets-check" element={<TicketsCheckPage />} />
+                  <Route path="chat" element={<SupportChatPage />} />
                 </Route>
               </Route>
 

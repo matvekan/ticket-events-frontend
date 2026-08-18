@@ -25,6 +25,9 @@ export function AdminLayout() {
         <NavLink to="/admin/tickets-check" className={linkClass}>
           Проверка билетов
         </NavLink>
+        <NavLink to="/admin/chat" className={linkClass}>
+          Чат
+        </NavLink>
       </nav>
       <Outlet />
     </div>

@@ -56,7 +56,7 @@ export function EventDetailPage() {
   };
 
   const total = useMemo(
-    () => event?.availableSeats.filter((s) => selectedIds.includes(s.id)).reduce((sum, s) => sum + (s.priceAmount ?? 0), 0) ?? 0,
+    () => event?.seats.filter((s) => selectedIds.includes(s.id)).reduce((sum, s) => sum + (s.priceAmount ?? 0), 0) ?? 0,
     [event, selectedIds],
   );
 
@@ -127,7 +127,7 @@ export function EventDetailPage() {
 
           <div className="mt-6">
             <h2 className="mb-3 font-display text-lg font-bold text-gray-900">Выберите места</h2>
-            <SeatPicker seats={event.availableSeats} selectedIds={selectedIds} onToggle={toggleSeat} />
+            <SeatPicker seats={event.seats} selectedIds={selectedIds} onToggle={toggleSeat} />
           </div>
         </div>
 

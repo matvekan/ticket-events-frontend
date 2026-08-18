@@ -51,6 +51,9 @@ export function Layout() {
                 <NavLink to="/orders" className={navLinkClass}>
                   Мои заказы
                 </NavLink>
+                <NavLink to="/chat" className={navLinkClass}>
+                  Поддержка
+                </NavLink>
                 {isAdmin && (
                   <NavLink to="/admin" className={navLinkClass}>
                     Админка

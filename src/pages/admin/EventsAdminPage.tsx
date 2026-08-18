@@ -131,7 +131,7 @@ export function EventsAdminPage() {
                         type="number"
                         min="0"
                         step="0.01"
-                        placeholder="Цена, ₽"
+                        placeholder="Цена, Br"
                         value={prices[seat.id] ?? ''}
                         onChange={(e) => setPrices((prev) => ({ ...prev, [seat.id]: e.target.value }))}
                         className="w-28 rounded-md border border-gray-300 px-2 py-1 text-right text-sm outline-none focus:border-indigo-500"

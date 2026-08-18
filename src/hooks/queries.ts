@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from '../lib/api';
-import type { AnalyticsDto, EventDetailsDto, EventDto, OrderDto, SeatDto, VenueDto } from '../types';
+import type { AnalyticsDto, ChatMessageDto, ChatRoomDto, EventDetailsDto, EventDto, OrderDto, SeatDto, VenueDto } from '../types';
 
 export const queryKeys = {
   events: ['events'] as const,
@@ -13,6 +13,9 @@ export const queryKeys = {
   order: (id: string) => ['order', id] as const,
   adminEvents: ['admin-events'] as const,
   adminAnalytics: ['admin-analytics'] as const,
+  chatRoom: ['chat-room'] as const,
+  chatMessages: (roomId: string) => ['chat-messages', roomId] as const,
+  adminChatRooms: ['admin-chat-rooms'] as const,
 };
 
 export function useEvents(search?: string) {
@@ -255,5 +258,35 @@ export function useForgotPassword() {
 export function useResetPassword() {
   return useMutation({
     mutationFn: (body: { token: string; password: string }) => api.post('/auth/reset-password', body),
+  });
+}
+
+export function useOpenChatRoom() {
+  return useMutation({
+    mutationFn: async () => {
+      const { data } = await api.post<ChatRoomDto>('/chat/room');
+      return data;
+    },
+  });
+}
+
+export function useChatMessages(roomId: string | null) {
+  return useQuery({
+    queryKey: queryKeys.chatMessages(roomId ?? ''),
+    enabled: Boolean(roomId),
+    queryFn: async () => {
+      const { data } = await api.get<ChatMessageDto[]>(`/chat/rooms/${roomId}/messages`);
+      return data;
+    },
+  });
+}
+
+export function useAdminChatRooms() {
+  return useQuery({
+    queryKey: queryKeys.adminChatRooms,
+    queryFn: async () => {
+      const { data } = await api.get<ChatRoomDto[]>('/admin/chat/rooms');
+      return data;
+    },
   });
 }
