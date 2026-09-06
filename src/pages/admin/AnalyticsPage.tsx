@@ -116,8 +116,8 @@ export function AnalyticsPage() {
               </thead>
               <tbody>
                 {topUsers.map((u) => (
-                  <tr key={u.user_id} className="border-b border-gray-100 last:border-0">
-                    <td className="py-2 font-mono text-xs text-gray-700">{u.user_id.slice(0, 13)}…</td>
+                  <tr key={u.userId} className="border-b border-gray-100 last:border-0">
+                    <td className="py-2 font-mono text-xs text-gray-700">{u.userId.slice(0, 13)}…</td>
                     <td className="py-2 text-right text-gray-700">{u.orders}</td>
                     <td className="py-2 text-right font-medium text-gray-900">
                       {formatPrice(Math.round(u.revenue))}
@@ -136,9 +136,9 @@ export function AnalyticsPage() {
           ) : (
             <ul className="divide-y divide-gray-100">
               {recentPayments.map((p) => (
-                <li key={p.order_id} className="flex items-center justify-between gap-4 py-2.5">
+                <li key={p.orderId} className="flex items-center justify-between gap-4 py-2.5">
                   <div className="min-w-0">
-                    <p className="truncate font-mono text-xs text-gray-700">{p.order_id.slice(0, 13)}…</p>
+                    <p className="truncate font-mono text-xs text-gray-700">{p.orderId.slice(0, 13)}…</p>
                     <p className="text-xs text-gray-400">{formatDateTime(p.timestamp)}</p>
                   </div>
                   <span className="shrink-0 text-sm font-semibold text-emerald-600">

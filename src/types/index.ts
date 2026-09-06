@@ -78,14 +78,14 @@ export interface AnalyticsByDay {
 }
 
 export interface AnalyticsUser {
-  user_id: string;
+  userId: string;
   orders: number;
   revenue: number;
 }
 
 export interface AnalyticsPayment {
-  order_id: string;
-  user_id: string;
+  orderId: string;
+  userId: string;
   amount: number;
   timestamp: string;
 }
