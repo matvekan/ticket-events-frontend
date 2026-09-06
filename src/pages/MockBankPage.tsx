@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { api } from '../lib/api';
+import { api, apiErrorMessage } from '../lib/api';
 import { Spinner } from '../components/ui/Spinner';
 import { Alert } from '../components/ui/Alert';
 import { Button } from '../components/ui/Button';
@@ -17,7 +17,7 @@ export function MockBankPage() {
     const { id = '' } = useParams();
     const navigate = useNavigate();
 
-    const { data, isLoading, isError } = useQuery({
+    const { data, isLoading, isError, error } = useQuery({
         queryKey: ['mock-bank', id],
         queryFn: async () => {
             const { data } = await api.get<MockBankPayment>(`/mock-bank/${id}`);
@@ -33,7 +33,9 @@ export function MockBankPage() {
     });
 
     if (isLoading) return <Spinner />;
-    if (isError || !data) return <Alert variant="error">Ошибка загрузки платежа.</Alert>;
+
+    if (isError) return <Alert variant="error">{apiErrorMessage(error)}</Alert>;
+    if (!data) return <Alert variant="error">Данные платежа отсутствуют.</Alert>;
 
     const handleAction = async (action: 'charge' | 'decline') => {
         try {

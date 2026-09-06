@@ -37,7 +37,7 @@ export default function App() {
       <BrowserRouter>
         <AuthProvider>
           <Routes>
-              <Route path="/mock-bank/:id" element={<MockBankPage />} />
+              <Route path="/payment/:id" element={<MockBankPage />} />
             <Route element={<Layout />}>
               <Route path="/" element={<Navigate to="/events" replace />} />
               <Route path="/events" element={<EventsListPage />} />
