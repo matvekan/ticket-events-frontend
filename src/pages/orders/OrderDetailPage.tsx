@@ -13,9 +13,7 @@ export function OrderDetailPage() {
     const { id = '' } = useParams();
     const [searchParams] = useSearchParams();
     const paymentResult = searchParams.get('payment');
-
-    const navigate = useNavigate();
-
+    useNavigate();
     const { data: order, isLoading, isError } = useOrder(id);
     const pay = usePayOrder();
     const cancel = useCancelOrder();
@@ -28,9 +26,7 @@ export function OrderDetailPage() {
         setError(null);
         try {
             const { data } = await pay.mutateAsync(order.id);
-
-            navigate(`/payment/${data.paymentId}`);
-
+            window.location.href = data.paymentUrl;
         } catch (e) {
             setError(apiErrorMessage(e));
         }

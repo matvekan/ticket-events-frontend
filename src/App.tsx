@@ -21,6 +21,7 @@ import { TicketsCheckPage } from './pages/admin/TicketsCheckPage';
 import { SupportChatPage } from './pages/admin/SupportChatPage';
 import { ChatPage } from './pages/chat/ChatPage';
 import { MockBankPage } from './pages/MockBankPage';
+import { AdminLoginPage } from './pages/admin/AdminLoginPage';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -43,6 +44,7 @@ export default function App() {
               <Route path="/events" element={<EventsListPage />} />
               <Route path="/events/:id" element={<EventDetailPage />} />
               <Route path="/login" element={<LoginPage />} />
+                <Route path="/admin/login" element={<AdminLoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
               <Route path="/reset-password" element={<ResetPasswordPage />} />

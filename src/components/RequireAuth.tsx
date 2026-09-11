@@ -20,7 +20,7 @@ export function RequireAdmin() {
   const location = useLocation();
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" state={{ from: fromLocation(location) }} replace />;
+    return <Navigate to="/admin/login" state={{ from: fromLocation(location) }} replace />;
   }
   if (!isAdmin) {
     return <Navigate to="/" replace />;

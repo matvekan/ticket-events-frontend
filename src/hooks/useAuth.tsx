@@ -17,6 +17,7 @@ interface AuthContextValue {
   isAdmin: boolean;
   userEmail: string | null;
   login: (email: string, password: string) => Promise<void>;
+  adminLogin: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
 }
@@ -59,6 +60,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setTokenState(data.token);
   }, []);
 
+  const adminLogin = useCallback(async (email: string, password: string) => {
+      const {data} = await api.post<{ token: string }>('/admin/login', {email, password});
+      setToken(data.token);
+      setTokenState(data.token);
+  }, []);
+
   const register = useCallback(async (name: string, email: string, password: string) => {
     await api.post('/auth/register', { name, email, password });
     await login(email, password);
@@ -76,6 +83,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isAdmin: payload?.roles.includes('ROLE_ADMIN') ?? false,
       userEmail: payload?.username ?? null,
       login,
+      adminLogin,
       register,
       logout,
     }),
