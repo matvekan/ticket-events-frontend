@@ -2,6 +2,7 @@ export type EventStatus = 'draft' | 'published' | 'cancelled' | 'sold_out';
 export type SeatStatus = 'free' | 'reserved' | 'sold';
 export type SeatType = 'standard' | 'vip' | 'premium';
 export type OrderStatus = 'pending' | 'paid' | 'cancelled' | 'refunded';
+export type TicketStatus = 'reserved' | 'active' | 'used' | 'cancelled' | 'refunded';
 
 export interface EventDto {
   id: string;
@@ -13,6 +14,17 @@ export interface EventDto {
   priceMin: number;
   priceMax: number;
   status: EventStatus;
+}
+
+export interface TicketDto {
+    id: string;
+    code: string;
+    eventSeatId: string;
+    eventTitle: string;
+    eventDate: string;
+    venueName: string;
+    priceAmount: number;
+    status?: TicketStatus;
 }
 
 export interface EventDetailsDto extends EventDto {
@@ -118,4 +130,9 @@ export interface ChatRoomDto {
   userEmail: string;
   createdAt: string;
   lastMessage: ChatMessageDto | null;
+}
+
+export interface Paginated<T> {
+    items: T[];
+    nextCursor: string | null;
 }

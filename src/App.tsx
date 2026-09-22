@@ -20,7 +20,6 @@ import { AnalyticsPage } from './pages/admin/AnalyticsPage';
 import { TicketsCheckPage } from './pages/admin/TicketsCheckPage';
 import { SupportChatPage } from './pages/admin/SupportChatPage';
 import { ChatPage } from './pages/chat/ChatPage';
-import { MockBankPage } from './pages/MockBankPage';
 import { AdminLoginPage } from './pages/admin/AdminLoginPage';
 
 const queryClient = new QueryClient({
@@ -38,7 +37,6 @@ export default function App() {
       <BrowserRouter>
         <AuthProvider>
           <Routes>
-              <Route path="/payment/:id" element={<MockBankPage />} />
             <Route element={<Layout />}>
               <Route path="/" element={<Navigate to="/events" replace />} />
               <Route path="/events" element={<EventsListPage />} />

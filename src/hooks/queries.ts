@@ -1,6 +1,6 @@
-﻿import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+﻿import { useMutation, useQuery, useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from '../lib/api';
-import type { AnalyticsDto, ChatMessageDto, ChatRoomDto, EventDetailsDto, EventDto, OrderDto, SeatDto, VenueDto } from '../types';
+import type { AnalyticsDto, ChatMessageDto, ChatRoomDto, EventDetailsDto, EventDto, OrderDto, Paginated, SeatDto, VenueDto } from '../types';
 
 export const queryKeys = {
   events: ['events'] as const,
@@ -19,20 +19,21 @@ export const queryKeys = {
 };
 
 export function useEvents(search?: string) {
-  return useQuery({
-    queryKey: [...queryKeys.events, search ?? ''],
-    queryFn: async () => {
-      const trimmed = search?.trim();
-      if (!trimmed) {
-        const { data } = await api.get<EventDto[]>('/events');
-        return data;
-      }
-      const { data } = await api.get<EventDto[]>('/events/search', {
-        params: { query: trimmed },
-      });
-      return data;
-    },
-  });
+    return useInfiniteQuery({
+        queryKey: [...queryKeys.events, search ?? ''],
+        initialPageParam: null as string | null,
+        getNextPageParam: (lastPage: Paginated<EventDto>) => lastPage.nextCursor,
+        queryFn: async ({ pageParam }): Promise<Paginated<EventDto>> => {
+            const trimmed = search?.trim();
+            const params: Record<string, any> = { limit: 12 };
+            if (pageParam) params.cursor = pageParam;
+            if (trimmed) params.query = trimmed;
+
+            const endpoint = trimmed ? '/events/search' : '/events';
+            const { data } = await api.get<Paginated<EventDto>>(endpoint, { params });
+            return data;
+        },
+    });
 }
 
 export function useEventDetails(id: string) {
@@ -87,13 +88,19 @@ export function useVenueSeats(venueId: string) {
 }
 
 export function useAdminEvents() {
-  return useQuery({
-    queryKey: queryKeys.adminEvents,
-    queryFn: async () => {
-      const { data } = await api.get<EventDto[]>('/admin/events');
-      return data;
-    },
-  });
+    return useInfiniteQuery({
+        queryKey: queryKeys.adminEvents,
+        initialPageParam: null as string | null,
+        // И здесь:
+        getNextPageParam: (lastPage: Paginated<EventDto>) => lastPage.nextCursor,
+        queryFn: async ({ pageParam }): Promise<Paginated<EventDto>> => {
+            const params: Record<string, any> = { limit: 20 };
+            if (pageParam) params.cursor = pageParam;
+
+            const { data } = await api.get<Paginated<EventDto>>('/admin/events', { params });
+            return data;
+        },
+    });
 }
 
 export function useAdminAnalytics() {
@@ -289,4 +296,17 @@ export function useAdminChatRooms() {
       return data;
     },
   });
+}
+
+export function useRefundTickets() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({ orderId, ticketIds }: { orderId: string; ticketIds: string[] }) =>
+            api.post(`/orders/${orderId}/refund-tickets`, { ticketIds }),
+        onSuccess: (_, { orderId }) => {
+            queryClient.invalidateQueries({ queryKey: queryKeys.orders });
+            queryClient.invalidateQueries({ queryKey: queryKeys.order(orderId) });
+        },
+    });
 }
